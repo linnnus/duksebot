@@ -1,9 +1,11 @@
 import datetime
 import dotenv
+import icalevents.icalevents
 import os
 import pytz
 import requests
 import sys
+
 
 ## Config
 
@@ -65,6 +67,20 @@ name_to_id = {
 
 # Time zone to use for current week.
 TIMEZONE = "Europe/Copenhagen"
+
+# Url of school events. This should point to a .ics file which lists all
+# lessons as events.
+CALENDAR_URL = "https://outlook.office365.com/owa/calendar/897dca157a1542f6b5755e6c2676a5c7@edu.aarhustech.dk/5d9bcd18c06b4dffad68112b87b847de8355939558013369796/S-1-8-3277253076-3182863098-1525276079-582714796/reachcalendar.ics"
+
+## Check if school's out.
+
+today = datetime.date.today()
+tomorrow = today + datetime.timedelta(days=1)
+events = icalevents.icalevents.events(CALENDAR_URL, start=today, end=tomorrow)
+
+if len(events) == 0:
+    print("There are no calendar events today -> stopping execution.")
+    sys.exit(0)
 
 ## Who's turn is it?
 
