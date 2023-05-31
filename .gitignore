@@ -1,1 +1,5 @@
+# Secrets (e.g. the webhook token) are stored in here.
 .env
+
+# Cached calendars go in here.
+.cache/
