@@ -6,16 +6,22 @@ import pytz
 import requests
 import sys
 
+## Check if school's out.
 
-## Config
+# Url of school events. This should point to a .ics file which lists all
+# lessons as events.
 
-dotenv.load_dotenv()
+CALENDAR_URL = "https://outlook.office365.com/owa/calendar/897dca157a1542f6b5755e6c2676a5c7@edu.aarhustech.dk/5d9bcd18c06b4dffad68112b87b847de8355939558013369796/S-1-8-3277253076-3182863098-1525276079-582714796/reachcalendar.ics"
 
-# The id of the webhook to use.
-WEBHOOK_ID = os.environ["WEBHOOK_ID"]
+today = datetime.date.today()
+tomorrow = today + datetime.timedelta(days=1)
+events = icalevents.icalevents.events(CALENDAR_URL, start=today, end=tomorrow)
 
-# The token of the webhook to use.
-WEBHOOK_TOKEN = os.environ["WEBHOOK_TOKEN"]
+if len(events) == 0:
+    print("There are no calendar events today -> stopping execution.")
+    sys.exit(0)
+
+## Who's turn is it?
 
 # A mapping from week numbers to lists of names. This is used
 # to look up, whose turn it is.
@@ -32,6 +38,21 @@ week_to_suckers = {
     21: ["***REMOVED***", "***REMOVED***"],
     22: ["***REMOVED***", "***REMOVED***"]
 }
+
+# Time zone to use for current week.
+TIMEZONE = "Europe/Copenhagen"
+
+time_zone = pytz.timezone(TIMEZONE)
+today = datetime.datetime.now(time_zone).date()
+try:
+    week = today.isocalendar().week
+except IndexError:
+    print("No suckers for this week. Exiting.")
+    sys.exit(0)
+
+names = week_to_suckers[week]
+
+## Construct message
 
 # A mapping from names to user ids. This is used to ping members.
 name_to_id = {
@@ -65,37 +86,6 @@ name_to_id = {
     "***REMOVED***":   "311544259662577675",
 }
 
-# Time zone to use for current week.
-TIMEZONE = "Europe/Copenhagen"
-
-# Url of school events. This should point to a .ics file which lists all
-# lessons as events.
-CALENDAR_URL = "https://outlook.office365.com/owa/calendar/897dca157a1542f6b5755e6c2676a5c7@edu.aarhustech.dk/5d9bcd18c06b4dffad68112b87b847de8355939558013369796/S-1-8-3277253076-3182863098-1525276079-582714796/reachcalendar.ics"
-
-## Check if school's out.
-
-today = datetime.date.today()
-tomorrow = today + datetime.timedelta(days=1)
-events = icalevents.icalevents.events(CALENDAR_URL, start=today, end=tomorrow)
-
-if len(events) == 0:
-    print("There are no calendar events today -> stopping execution.")
-    sys.exit(0)
-
-## Who's turn is it?
-
-time_zone = pytz.timezone(TIMEZONE)
-today = datetime.datetime.now(time_zone).date()
-try:
-    week = today.isocalendar().week
-except IndexError:
-    print("No suckers for this week. Exiting.")
-    sys.exit(0)
-
-names = week_to_suckers[week]
-
-## Construct message
-
 def try_mention(name):
     try:
         id = name_to_id[name]
@@ -110,6 +100,15 @@ concatenated_mentions = ", ".join(mentions[:-1]) + " og " + mentions[-1]
 message = f"Der er IT hjælp i lokale D4407\n(dagens dukse er {concatenated_mentions}\nnu vil jeg ikke have nogen skipperering fra jer gutter og mia!)"
 
 ## Send data
+
+# Read secrets from `.env`.
+dotenv.load_dotenv()
+
+# The id of the webhook to use.
+WEBHOOK_ID = os.environ["WEBHOOK_ID"]
+
+# The token of the webhook to use.
+WEBHOOK_TOKEN = os.environ["WEBHOOK_TOKEN"]
 
 url = f"https://discord.com/api/webhooks/{WEBHOOK_ID}/{WEBHOOK_TOKEN}"
 
