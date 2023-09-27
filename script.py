@@ -119,7 +119,8 @@ mentions = [try_mention(n) for n in names]
 
 concatenated_mentions = ", ".join(mentions[:-1]) + " og " + mentions[-1]
 
-message = f"Der er IT hjælp i lokale D4407\n(dagens dukse er {concatenated_mentions}\nnu vil jeg ikke have nogen skipperering fra jer gutter og mia!)"
+message = f"""dagens dukse er {concatenated_mentions}
+nu vil jeg ikke have nogen skipperering fra jer gutter (og mia!) :nerd:"""
 
 ## Send data
 
