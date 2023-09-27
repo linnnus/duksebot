@@ -8,4 +8,5 @@ setup(name="duksebot",
       author="Linus overduks",
       url="https://github.com/linnnus/duksebot",
       scripts=["./script.py"],
+      install_requires=open("./requirements.txt").read().splitlines()
      )
