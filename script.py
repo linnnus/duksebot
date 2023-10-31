@@ -32,7 +32,7 @@ week_to_suckers = {
     40: [ "Laurits",  "Toke" ],
     41: [ "Viktor",   "Burak" ],
     43: [ "Noah",     "Philip" ],
-    44: [ "Jesse",    "Thomas" ],
+    44: [ "Hazel",    "Thomas" ],
     45: [ "Sebastian","Martin" ],
     46: [ "Thor",     "Mads" ],
     47: [ "Mia",      "Holger" ],
@@ -49,7 +49,7 @@ week_to_suckers = {
     8:  [ "Liv",      "Sejr" ],
     9:  [ "Noah",     "Magnus" ],
     10: [ "Rasmus",   "Ksawery" ],
-    11: [ "Tobias",   "Jesse" ],
+    11: [ "Tobias",   "Hazel" ],
     12: [ "Thor",     "Philip" ],
     13: [ "Toke",     "Mads" ],
     14: [ "Magne",    "Laurits" ],
@@ -58,7 +58,7 @@ week_to_suckers = {
     17: [ "Holger",   "Noah" ],
     18: [ "Mia",      "Thomas" ],
     19: [ "Tobias",   "Martin" ],
-    20: [ "Jesse",    "Sebastian" ],
+    20: [ "Hazel",    "Sebastian" ],
 }
 
 # Time zone to use for current week.
@@ -84,6 +84,7 @@ name_to_id = {
     "Flòra":       "727113666788327475",
     "Holger":      "444574998942711808",
     "Jannick":     "285867862588129283",
+    "Hazel":       "318057147940470795",
     "Jesse":       "318057147940470795",
     "Rasmus":      "763332469654028328",
     "Ksawery":     "1042082836368343100",
